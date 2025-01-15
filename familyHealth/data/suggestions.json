@@ -1,0 +1,17 @@
+{
+    "happy": [
+        "Play a friendly sports match",
+        "Go for an adventure hike",
+        "Host a backyard BBQ party"
+    ],
+    "sad": [
+        "Try painting or drawing",
+        "Watch a feel-good movie together",
+        "Cook a new recipe as a group"
+    ],
+    "anxious": [
+        "Do a yoga session",
+        "Write your thoughts in a journal",
+        "Spend time gardening or with nature"
+    ]
+}

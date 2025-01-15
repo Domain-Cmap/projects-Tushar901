@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Mental Health Chatbot</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .chatbot-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chatbot-messages {
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background-color: #f8f9fa;
+        }
+
+        .chatbot-messages p {
+            margin: 0.5rem 0;
+        }
+
+        .chatbot-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input input {
+            flex-grow: 1;
+            border-radius: 8px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+        }
+
+        .chatbot-input button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .chatbot-input button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-4">
+        <!-- Header -->
+        <header class="header">
+            <h1>Family Mental Health Chatbot</h1>
+            <a href="index.html" class="btn btn-light">Back to Dashboard</a>
+        </header>
+
+        <!-- Chatbot Interface -->
+        <div class="chatbot-container">
+            <div class="chatbot-messages" id="chatbotMessages">
+                <p><strong>Chatbot:</strong> Welcome! How can I assist you with your family's mental health today?</p>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="userMessage" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 mt-4">
+        <p>&copy; 2024 Family Mental Health Dashboard. Developed By Aman.</p>
+    </footer>
+
+    <script>
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const userMessageInput = document.getElementById('userMessage');
+        const apiEndpoint = "/chat";
+        let chatHistory = [];
+
+        async function sendMessage() {
+            const userMessage = userMessageInput.value.trim();
+            if (!userMessage) return;
+
+            console.log("User message:", userMessage); // Debug: Log user's input
+
+            // Display user's message
+            const userMessageElement = document.createElement('p');
+            userMessageElement.innerHTML = `<strong>You:</strong> ${userMessage}`;
+            chatbotMessages.appendChild(userMessageElement);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Add user's message to chat history
+            chatHistory.push({ role: "user", content: userMessage });
+            console.log("Updated chat history:", chatHistory); // Debug: Log updated chat history
+
+            // Send message to API
+            try {
+                console.log("Sending API request with payload:", {
+                    query: userMessage,
+                    history: chatHistory,
+                }); // Debug: Log API request payload
+
+                const response = await fetch(apiEndpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ query: userMessage, history: chatHistory }),
+                });
+
+                console.log("API response status:", response.status); // Debug: Log response status
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("API response data:", data); // Debug: Log response data
+                    const botResponse = data.response;
+
+                    // Display chatbot's response
+                    const botMessageElement = document.createElement('p');
+                    botMessageElement.innerHTML = `<strong>Chatbot:</strong> ${botResponse}`;
+                    chatbotMessages.appendChild(botMessageElement);
+
+                    // Add chatbot's response to chat history
+                    chatHistory.push({ role: "assistant", content: botResponse });
+                    console.log("Updated chat history after bot response:", chatHistory); // Debug: Log updated history
+                } else {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+            } catch (error) {
+                console.error("Error during API interaction:", error); // Debug: Log error
+
+                const errorMessageElement = document.createElement('p');
+                errorMessageElement.innerHTML = `<strong>Chatbot:</strong> Sorry, I encountered an error. Please try again later.`;
+                chatbotMessages.appendChild(errorMessageElement);
+            }
+
+            // Scroll to the latest message and clear input
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            userMessageInput.value = '';
+        }
+    </script>
+
+</body>
+
+</html>

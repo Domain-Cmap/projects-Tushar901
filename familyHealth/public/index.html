@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportsman Mental Health Monitoring</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .logo {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar .card {
+            margin-bottom: 1rem;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar .card-body {
+            padding: 1rem;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .content {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 100%;
+        }
+
+        .mood-icons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .mood-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .mood-icons button img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .chatbot-icon {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .mood-icons button span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-4">
+        <!-- Header -->
+        <header class="header">
+            <!-- <img src="images/logo.png" alt="Logo" class="logo"> -->
+            <h1>Sportsman Mental Health Monitoring</h1>
+            <img src="./assests/Chatbot.png" alt="Chatbot" class="chatbot-icon"
+                onclick="window.location.href = 'chatbot.html'">
+        </header>
+
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-md-4">
+                <div class="sidebar">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Daily Affirmation</h5>
+                            <p class="card-text" id="affirmation">You are doing your best, and that's enough!</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Log Your Mood</h5>
+                            <div class="mood-icons">
+                                <button onclick="logMood('Happy')">
+                                    <img src="./assests/happy.png" alt="Happy">
+                                    <span>Happy</span>
+                                </button>
+                                <button onclick="logMood('Sad')">
+                                    <img src="./assests/sad.png" alt="Sad">
+                                    <span>Sad</span>
+                                </button>
+                                <button onclick="logMood('Anxious')">
+                                    <img src="./assests/Anxious.png" alt="Anxious">
+                                    <span>Anxious</span>
+                                </button>
+                                <button onclick="logMood('Angry')">
+                                    <img src="./assests/angry.png" alt="Angry">
+                                    <span>Angry</span>
+                                </button>
+                                <button onclick="logMood('Calm')">
+                                    <img src="./assests/Calm.png" alt="Calm">
+                                    <span>Calm</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Activity Suggestions</h5>
+                            <ul class="list-group" id="activitySuggestions">
+                                <li class="list-group-item">Take a 10-minute walk outdoors.</li>
+                                <li class="list-group-item">Listen to calming music.</li>
+                                <li class="list-group-item">Try a breathing exercise.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="col-md-8">
+                <div class="content">
+                    <!-- Mood Report Section -->
+                    <section class="mb-4">
+                        <h2 class="h4">Mood Analysis</h2>
+                        <div class="chart-container">
+                            <canvas id="reportChart"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-3 mt-4">
+            <p>&copy; 2024 Sportsman Mental Health Monitoring. Developed By Tushar.</p>
+        </footer>
+    </div>
+
+    <script>
+        function logMood(mood) {
+            console.log(`Mood logged: ${mood}`);
+            // Add logic to send mood data to the server or process it further
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
